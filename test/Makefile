@@ -1,6 +1,5 @@
 DEBUG=0
-CXXFLAGS=-std=c++17 -Wall -Wno-c++98-compat -O2 -I../external/Catch2/single_include -I../include
-LDFLAGS=-O2
+CXXFLAGS=-std=c++17 -Wall -Wno-c++98-compat -I../external/Catch2/single_include -I../include
 SOURCES=main.cpp tests.cpp
 BASE_NAMES=$(basename $(SOURCES))
 OBJECTS=$(BASE_NAMES:=.o)
@@ -10,6 +9,7 @@ EXECUTABLE=test
 all: $(EXECUTABLE)
 ifeq ($(DEBUG),1)
 all: CXXFLAGS+=-DDEBUG -g
+all: LDFLAGS+=-g
 else
 all: CXXFLAGS+=-O3
 all: LDFLAGS+=-O3
