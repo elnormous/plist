@@ -192,7 +192,7 @@ TEST_CASE("String with space encoding", "[encoding]")
     }
 }
 
-TEST_CASE("Empty object encoding", "[encoding]")
+TEST_CASE("Empty dictionary encoding", "[encoding]")
 {
     const plist::Value v;
 
@@ -206,5 +206,22 @@ TEST_CASE("Empty object encoding", "[encoding]")
     {
         const auto result = plist::encode(v, plist::Format::xml);
         REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict></dict></plist>");
+    }
+}
+
+TEST_CASE("Empty array encoding", "[encoding]")
+{
+    const plist::Value v = plist::Array{};
+
+    SECTION("ascii")
+    {
+        const auto result = plist::encode(v, plist::Format::ascii);
+        REQUIRE(result == "// !$*UTF8*$!\n()");
+    }
+
+    SECTION("xml")
+    {
+        const auto result = plist::encode(v, plist::Format::xml);
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><array></array></plist>");
     }
 }
