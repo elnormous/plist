@@ -225,3 +225,20 @@ TEST_CASE("Empty array encoding", "[encoding]")
         REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><array></array></plist>");
     }
 }
+
+TEST_CASE("Binary data encoding", "[encoding]")
+{
+    const plist::Value v = plist::Data{std::byte{0U}, std::byte{1U}};
+
+    SECTION("ascii")
+    {
+        const auto result = plist::encode(v, plist::Format::ascii);
+        REQUIRE(result == "// !$*UTF8*$!\n<0001>");
+    }
+
+    SECTION("xml")
+    {
+        const auto result = plist::encode(v, plist::Format::xml);
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><data>AAE=</data></plist>");
+    }
+}
