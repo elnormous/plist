@@ -120,7 +120,9 @@ TEST_CASE("Integer encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><integer>1</integer></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><integer>1</integer></plist>");
     }
 }
 
@@ -137,7 +139,9 @@ TEST_CASE("Float encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><real>1.000000</real></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><real>1.000000</real></plist>");
     }
 }
 
@@ -154,7 +158,9 @@ TEST_CASE("Bool encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><true/></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><true/></plist>");
     }
 }
 
@@ -171,7 +177,9 @@ TEST_CASE("String encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><string>a</string></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><string>a</string></plist>");
     }
 }
 
@@ -188,7 +196,9 @@ TEST_CASE("String with space encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><string>a b</string></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><string>a b</string></plist>");
     }
 }
 
@@ -205,7 +215,9 @@ TEST_CASE("Empty dictionary encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><dict></dict></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><dict></dict></plist>");
     }
 }
 
@@ -222,7 +234,9 @@ TEST_CASE("Empty array encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><array></array></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><array></array></plist>");
     }
 }
 
@@ -239,6 +253,27 @@ TEST_CASE("Binary data encoding", "[encoding]")
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
-        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\"><data>AAE=</data></plist>");
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><data>AAE=</data></plist>");
+    }
+}
+
+TEST_CASE("Array encoding", "[encoding]")
+{
+    const plist::Value v = plist::Array{1, 2};
+
+    SECTION("ascii")
+    {
+        const auto result = plist::encode(v, plist::Format::ascii);
+        REQUIRE(result == "// !$*UTF8*$!\n(1,2,)");
+    }
+
+    SECTION("xml")
+    {
+        const auto result = plist::encode(v, plist::Format::xml);
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\">"
+                "<array><integer>1</integer><integer>2</integer></array></plist>");
     }
 }
