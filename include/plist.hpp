@@ -340,18 +340,18 @@ namespace plist
                     case Value::Type::dictionary:
                     {
                         result.push_back('{');
-                        if (whitespaces) result.push_back('\n');
                         for (const auto& [key, entryValue] : value.as<Dictionary>())
                         {
+                            if (whitespaces) result.push_back('\n');
                             if (whitespaces) result.insert(result.end(), level + 1, '\t');
                             encode(key, result);
                             if (whitespaces) result.push_back(' ');
                             result.push_back('=');
                             if (whitespaces) result.push_back(' ');
                             encode(entryValue, result, whitespaces, level + 1);
-                            result.push_back(';');
-                            if (whitespaces) result.push_back('\n');
+                            result.push_back(';'); // trailing semicolon is mandatory
                         }
+                        if (whitespaces) result.push_back('\n');
                         if (whitespaces) result.insert(result.end(), level, '\t');
                         result += "}";
                         break;
@@ -359,15 +359,15 @@ namespace plist
                     case Value::Type::array:
                     {
                         result.push_back('(');
-                        if (whitespaces) result.push_back('\n');
-                        const auto last = value.as<Array>().empty() ? nullptr : &value.as<Array>().back();
+                        std::size_t count = 0;
                         for (const auto& child : value.as<Array>())
                         {
+                            if (count++) result.push_back(','); // trailing comma is optional
+                            if (whitespaces) result.push_back('\n');
                             if (whitespaces) result.insert(result.end(), level + 1, '\t');
                             encode(child, result, whitespaces, level + 1);
-                            if (&child != last) result.push_back(',');
-                            if (whitespaces) result.push_back('\n');
                         }
+                        if (whitespaces) result.push_back('\n');
                         if (whitespaces) result.insert(result.end(), level, '\t');
                         result += ')';
                         break;
