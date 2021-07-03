@@ -385,15 +385,19 @@ namespace plist
                         result += value.as<bool>() ? "YES" : "NO";
                         break;
                     case Value::Type::data:
+                    {
                         result += '<';
+                        std::size_t count = 0;
                         for (const auto b : value.as<Data>())
                         {
+                            if (whitespaces && count++) result.push_back(' ');
                             constexpr char digits[] = "0123456789ABCDEF";
                             result += digits[(static_cast<std::size_t>(b) >> 4) & 0x0F];
                             result += digits[static_cast<std::size_t>(b) & 0x0F];
                         }
                         result += '>';
                         break;
+                    }
                     case Value::Type::date:
                         throw std::runtime_error("Date fields are not supported");
                 };

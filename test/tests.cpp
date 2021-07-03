@@ -250,6 +250,12 @@ TEST_CASE("Binary data encoding", "[encoding]")
         REQUIRE(result == "// !$*UTF8*$!\n<0001>");
     }
 
+    SECTION("ascii with whitespaces")
+    {
+        const auto result = plist::encode(v, plist::Format::ascii, true);
+        REQUIRE(result == "// !$*UTF8*$!\n<00 01>");
+    }
+
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
@@ -269,6 +275,12 @@ TEST_CASE("Array encoding", "[encoding]")
         REQUIRE(result == "// !$*UTF8*$!\n(1,2)");
     }
 
+    SECTION("ascii with whitespaces")
+    {
+        const auto result = plist::encode(v, plist::Format::ascii, true);
+        REQUIRE(result == "// !$*UTF8*$!\n(\n\t1,\n\t2\n)");
+    }
+
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
@@ -276,19 +288,8 @@ TEST_CASE("Array encoding", "[encoding]")
                 "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\"><plist version=\"1.0\">"
                 "<array><integer>1</integer><integer>2</integer></array></plist>");
     }
-}
 
-TEST_CASE("Array encoding with whitespcaes", "[encoding]")
-{
-    const plist::Value v = plist::Array{1, 2};
-
-    SECTION("ascii")
-    {
-        const auto result = plist::encode(v, plist::Format::ascii, true);
-        REQUIRE(result == "// !$*UTF8*$!\n(\n\t1,\n\t2\n)");
-    }
-
-    SECTION("xml")
+    SECTION("xml with whitespaces")
     {
         const auto result = plist::encode(v, plist::Format::xml, true);
         REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -312,6 +313,12 @@ TEST_CASE("Dictionary encoding", "[encoding]")
         REQUIRE(result == "// !$*UTF8*$!\n{a=1;b=2;}");
     }
 
+    SECTION("ascii with whitespaces")
+    {
+        const auto result = plist::encode(v, plist::Format::ascii, true);
+        REQUIRE(result == "// !$*UTF8*$!\n{\n\ta = 1;\n\tb = 2;\n}");
+    }
+
     SECTION("xml")
     {
         const auto result = plist::encode(v, plist::Format::xml);
@@ -319,22 +326,8 @@ TEST_CASE("Dictionary encoding", "[encoding]")
                 "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
                 "<plist version=\"1.0\"><dict><key>a</key><integer>1</integer><key>b</key><integer>2</integer></dict></plist>");
     }
-}
 
-TEST_CASE("Dictionary encoding with whitespaces", "[encoding]")
-{
-    const plist::Value v = plist::Dictionary{
-        {"a", 1},
-        {"b", 2}
-    };
-
-    SECTION("ascii")
-    {
-        const auto result = plist::encode(v, plist::Format::ascii, true);
-        REQUIRE(result == "// !$*UTF8*$!\n{\n\ta = 1;\n\tb = 2;\n}");
-    }
-
-    SECTION("xml")
+    SECTION("xml with whitespaces")
     {
         const auto result = plist::encode(v, plist::Format::xml, true);
         REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
