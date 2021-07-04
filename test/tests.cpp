@@ -7,30 +7,35 @@
 TEST_CASE("Bool constructor", "[constructors]")
 {
     const plist::Value v = true;
+    REQUIRE(v.is<bool>());
     REQUIRE(v.as<bool>() == true);
 }
 
 TEST_CASE("Integer constructor", "[constructors]")
 {
     const plist::Value v = 1;
+    REQUIRE(v.is<std::int64_t>());
     REQUIRE(v.as<std::int64_t>() == 1);
 }
 
 TEST_CASE("String constructor", "[constructors]")
 {
     const plist::Value v = std::string{"test"};
+    REQUIRE(v.is<std::string>());
     REQUIRE(v.as<std::string>() == "test");
 }
 
 TEST_CASE("String literal constructor", "[constructors]")
 {
     const plist::Value v = "test";
+    REQUIRE(v.is<std::string>());
     REQUIRE(v.as<std::string>() == "test");
 }
 
 TEST_CASE("Array constructor", "[constructors]")
 {
     const plist::Value v = plist::Array{plist::Value{0}, plist::Value{1}};
+    REQUIRE(v.is<plist::Array>());
     REQUIRE(v.as<plist::Array>().size() == 2);
     REQUIRE(v[0].as<std::int64_t>() == 0);
     REQUIRE(v[1].as<std::int64_t>() == 1);
@@ -39,6 +44,7 @@ TEST_CASE("Array constructor", "[constructors]")
 TEST_CASE("Dictionary constructor", "[constructors]")
 {
     const plist::Value v = plist::Dictionary{{"0", plist::Value{0}}, {"1", plist::Value{1}}};
+    REQUIRE(v.is<plist::Dictionary>());
     REQUIRE(v.as<plist::Dictionary>().size() == 2);
     REQUIRE(v["0"].as<std::int64_t>() == 0);
     REQUIRE(v["1"].as<std::int64_t>() == 1);
@@ -47,6 +53,7 @@ TEST_CASE("Dictionary constructor", "[constructors]")
 TEST_CASE("Data constructor", "[constructors]")
 {
     const plist::Value v = plist::Data{std::byte{0U}, std::byte{1U}};
+    REQUIRE(v.is<plist::Data>());
     REQUIRE(v.as<plist::Data>().size() == 2);
     REQUIRE(v.as<plist::Data>()[0] == std::byte{0U});
     REQUIRE(v.as<plist::Data>()[1] == std::byte{1U});
