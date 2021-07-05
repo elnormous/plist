@@ -121,6 +121,28 @@ TEST_CASE("Data assignment", "[assignments]")
     REQUIRE(v.as<plist::Data>()[1] == std::byte{1U});
 }
 
+TEST_CASE("Array ranged loop", "[access]")
+{
+    plist::Value v = plist::Array{plist::Value{0}, plist::Value{1}};
+
+    SECTION("mutable")
+    {
+        std::size_t counter = 0;
+        for (const auto& e : v)
+            REQUIRE(e.as<std::size_t>() == counter++);
+        REQUIRE(counter == 2);
+    }
+
+    SECTION("const")
+    {
+        const auto c = v;
+        std::size_t counter = 0;
+        for (const auto& e : c)
+            REQUIRE(e.as<std::size_t>() == counter++);
+        REQUIRE(counter == 2);
+    }
+}
+
 TEST_CASE("Integer encoding", "[encoding]")
 {
     const plist::Value v = 1;
