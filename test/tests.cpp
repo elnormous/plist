@@ -46,6 +46,8 @@ TEST_CASE("Dictionary constructor", "[constructors]")
     const plist::Value v = plist::Dictionary{{"0", plist::Value{0}}, {"1", plist::Value{1}}};
     REQUIRE(v.is<plist::Dictionary>());
     REQUIRE(v.as<plist::Dictionary>().size() == 2);
+    REQUIRE(v.hasMember("0"));
+    REQUIRE(v.hasMember("1"));
     REQUIRE(v["0"].as<std::int64_t>() == 0);
     REQUIRE(v["1"].as<std::int64_t>() == 1);
 }
@@ -107,6 +109,8 @@ TEST_CASE("Dictionary assignment", "[assignments]")
     v = plist::Dictionary{{"0", plist::Value{0}}, {"1", plist::Value{1}}};
     REQUIRE(v.is<plist::Dictionary>());
     REQUIRE(v.as<plist::Dictionary>().size() == 2);
+    REQUIRE(v.hasMember("0"));
+    REQUIRE(v.hasMember("1"));
     REQUIRE(v["0"].as<std::int64_t>() == 0);
     REQUIRE(v["1"].as<std::int64_t>() == 1);
 }
