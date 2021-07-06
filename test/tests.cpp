@@ -36,7 +36,7 @@ TEST_CASE("Array constructor", "[constructors]")
 {
     const plist::Value v = plist::Array{plist::Value{0}, plist::Value{1}};
     REQUIRE(v.is<plist::Array>());
-    REQUIRE(v.as<plist::Array>().size() == 2);
+    REQUIRE(v.getSize() == 2);
     REQUIRE(v[0].as<std::int64_t>() == 0);
     REQUIRE(v[1].as<std::int64_t>() == 1);
 }
@@ -98,7 +98,7 @@ TEST_CASE("Array assignment", "[assignments]")
     plist::Value v;
     v = plist::Array{plist::Value{0}, plist::Value{1}};
     REQUIRE(v.is<plist::Array>());
-    REQUIRE(v.as<plist::Array>().size() == 2);
+    REQUIRE(v.getSize() == 2);
     REQUIRE(v[0].as<std::int64_t>() == 0);
     REQUIRE(v[1].as<std::int64_t>() == 1);
 }
