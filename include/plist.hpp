@@ -147,33 +147,6 @@ namespace plist
             return std::holds_alternative<Date>(value);
         }
 
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, String>>* = nullptr>
-        T& as()
-        {
-            if (const auto p = std::get_if<String>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, String>>* = nullptr>
-        const T& as() const
-        {
-            if (const auto p = std::get_if<String>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, const char*>>* = nullptr>
-        T as() const
-        {
-            if (const auto p = std::get_if<String>(&value))
-                return p->c_str();
-            else
-                throw TypeError{"Wrong type"};
-        }
-
         template <typename T, typename std::enable_if_t<std::is_same_v<T, bool>>* = nullptr>
         T as() const
         {
@@ -203,73 +176,40 @@ namespace plist
                 throw TypeError{"Wrong type"};
         }
 
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Dictionary>>* = nullptr>
+        template <typename T, typename std::enable_if_t<
+            std::is_same_v<T, String> ||
+            std::is_same_v<T, Dictionary> ||
+            std::is_same_v<T, Array> ||
+            std::is_same_v<T, Data> ||
+            std::is_same_v<T, Date>
+        >* = nullptr>
         T& as()
         {
-            if (const auto p = std::get_if<Dictionary>(&value))
+            if (const auto p = std::get_if<T>(&value))
                 return *p;
             else
                 throw TypeError{"Wrong type"};
         }
 
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Dictionary>>* = nullptr>
+        template <typename T, typename std::enable_if_t<std::is_same_v<T, const char*>>* = nullptr>
+        T as() const
+        {
+            if (const auto p = std::get_if<String>(&value))
+                return p->c_str();
+            else
+                throw TypeError{"Wrong type"};
+        }
+
+        template <typename T, typename std::enable_if_t<
+            std::is_same_v<T, String> ||
+            std::is_same_v<T, Dictionary> ||
+            std::is_same_v<T, Array> ||
+            std::is_same_v<T, Data> ||
+            std::is_same_v<T, Date>
+        >* = nullptr>
         const T& as() const
         {
-            if (const auto p = std::get_if<Dictionary>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Array>>* = nullptr>
-        T& as() noexcept
-        {
-            if (const auto p = std::get_if<Array>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Array>>* = nullptr>
-        const T& as() const
-        {
-            if (const auto p = std::get_if<Array>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Data>>* = nullptr>
-        T& as()
-        {
-            if (const auto p = std::get_if<Data>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Data>>* = nullptr>
-        const T& as() const
-        {
-            if (const auto p = std::get_if<Data>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Date>>* = nullptr>
-        T& as()
-        {
-            if (const auto p = std::get_if<Date>(&value))
-                return *p;
-            else
-                throw TypeError{"Wrong type"};
-        }
-
-        template <typename T, typename std::enable_if_t<std::is_same_v<T, Date>>* = nullptr>
-        const T& as() const
-        {
-            if (const auto p = std::get_if<Date>(&value))
+            if (const auto p = std::get_if<T>(&value))
                 return *p;
             else
                 throw TypeError{"Wrong type"};
