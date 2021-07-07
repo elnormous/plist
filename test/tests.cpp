@@ -61,6 +61,14 @@ TEST_CASE("Data constructor", "[constructors]")
     REQUIRE(v.as<plist::Data>()[1] == std::byte{1U});
 }
 
+TEST_CASE("Date constructor", "[constructors]")
+{
+    const auto t = std::chrono::system_clock::now();
+    const plist::Value v = t;
+    REQUIRE(v.is<plist::Date>());
+    REQUIRE(v.as<plist::Date>() == t);
+}
+
 TEST_CASE("Bool assignment", "[assignments]")
 {
     plist::Value v;
@@ -123,6 +131,15 @@ TEST_CASE("Data assignment", "[assignments]")
     REQUIRE(v.as<plist::Data>().size() == 2);
     REQUIRE(v.as<plist::Data>()[0] == std::byte{0U});
     REQUIRE(v.as<plist::Data>()[1] == std::byte{1U});
+}
+
+TEST_CASE("Date assignment", "[assignments]")
+{
+    const auto t = std::chrono::system_clock::now();
+    plist::Value v;
+    v = t;
+    REQUIRE(v.is<plist::Date>());
+    REQUIRE(v.as<plist::Date>() == t);
 }
 
 TEST_CASE("Array ranged loop", "[access]")

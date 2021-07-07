@@ -3,6 +3,7 @@
 #ifndef OUZEL_FORMATS_PLIST_HPP
 #define OUZEL_FORMATS_PLIST_HPP
 
+#include <chrono>
 #include <map>
 #include <stdexcept>
 #include <string>
@@ -30,6 +31,7 @@ namespace plist
         using Array = std::vector<Value>;
         using Data = std::vector<std::byte>;
         using String = std::string;
+        using Date = std::chrono::system_clock::time_point;
     public:
         Value() = default;
         Value(const Dictionary& v):value{v} {}
@@ -42,6 +44,7 @@ namespace plist
         Value(const String& v):value{v} {}
         Value(const char* v):value{v} {}
         Value(const Data& v):value{v} {}
+        Value(const Date& v):value{v} {}
 
         Value& operator=(const Dictionary& v)
         {
@@ -136,6 +139,12 @@ namespace plist
         bool is() const noexcept
         {
             return std::holds_alternative<Data>(value);
+        }
+
+        template <typename T, typename std::enable_if_t<std::is_same_v<T, Date>>* = nullptr>
+        bool is() const noexcept
+        {
+            return std::holds_alternative<Date>(value);
         }
 
         template <typename T, typename std::enable_if_t<std::is_same_v<T, String>>* = nullptr>
@@ -243,6 +252,24 @@ namespace plist
         const T& as() const
         {
             if (const auto p = std::get_if<Data>(&value))
+                return *p;
+            else
+                throw TypeError{"Wrong type"};
+        }
+
+        template <typename T, typename std::enable_if_t<std::is_same_v<T, Date>>* = nullptr>
+        T& as()
+        {
+            if (const auto p = std::get_if<Date>(&value))
+                return *p;
+            else
+                throw TypeError{"Wrong type"};
+        }
+
+        template <typename T, typename std::enable_if_t<std::is_same_v<T, Date>>* = nullptr>
+        const T& as() const
+        {
+            if (const auto p = std::get_if<Date>(&value))
                 return *p;
             else
                 throw TypeError{"Wrong type"};
@@ -385,7 +412,7 @@ namespace plist
         auto& getValue() const noexcept { return value; }
 
     private:
-        std::variant<Dictionary, Array, String, double, std::int64_t, bool, Data> value;
+        std::variant<Dictionary, Array, String, double, std::int64_t, bool, Data, Date> value;
     };
 
     enum class Format
@@ -398,6 +425,7 @@ namespace plist
     using Array = std::vector<Value>;
     using Data = std::vector<std::byte>;
     using String = std::string;
+    using Date = std::chrono::system_clock::time_point;
 
     inline std::string encode(const Value& value, Format format, bool whitespaces = false)
     {
@@ -504,9 +532,13 @@ namespace plist
                     }
                     result += '>';
                 }
-                else // date
+                else if (auto date = std::get_if<Date>(&value.getValue()))
+                {
+                    (void)date;
+                    throw std::runtime_error("Date fields are not supported");
+                }
+                else
                     throw std::runtime_error("Unsupported format");
-                    //throw std::runtime_error("Date fields are not supported");
             }
         };
 
@@ -633,9 +665,13 @@ namespace plist
                     }
                     result += "</data>";
                 }
-                else // date
+                else if (auto date = std::get_if<Date>(&value.getValue()))
+                {
+                    (void)date;
+                    throw std::runtime_error("Date fields are not supported");
+                }
+                else
                     throw std::runtime_error("Unsupported format");
-                    //throw std::runtime_error("Date fields are not supported");
             }
         };
 
