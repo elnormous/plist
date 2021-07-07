@@ -151,9 +151,9 @@ TEST_CASE("Integer encoding", "[encoding]")
 {
     const plist::Value v = 1;
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n1");
     }
 
@@ -170,9 +170,9 @@ TEST_CASE("Float encoding", "[encoding]")
 {
     const plist::Value v = 1.0F;
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n1.000000");
     }
 
@@ -189,9 +189,9 @@ TEST_CASE("Bool encoding", "[encoding]")
 {
     const plist::Value v = true;
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\nYES");
     }
 
@@ -208,9 +208,9 @@ TEST_CASE("String encoding", "[encoding]")
 {
     const plist::Value v = "a";
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\na");
     }
 
@@ -227,9 +227,9 @@ TEST_CASE("String with space encoding", "[encoding]")
 {
     const plist::Value v = "a b";
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n\"a b\"");
     }
 
@@ -246,9 +246,9 @@ TEST_CASE("Empty array encoding", "[encoding]")
 {
     const plist::Value v = plist::Array{};
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n()");
     }
 
@@ -265,9 +265,9 @@ TEST_CASE("Empty dictionary encoding", "[encoding]")
 {
     const plist::Value v;
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n{}");
     }
 
@@ -284,15 +284,15 @@ TEST_CASE("Binary data encoding", "[encoding]")
 {
     const plist::Value v = plist::Data{std::byte{0U}, std::byte{1U}};
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n<0001>");
     }
 
-    SECTION("ascii with whitespaces")
+    SECTION("text with whitespaces")
     {
-        const auto result = plist::encode(v, plist::Format::ascii, true);
+        const auto result = plist::encode(v, plist::Format::text, true);
         REQUIRE(result == "// !$*UTF8*$!\n<00 01>");
     }
 
@@ -309,15 +309,15 @@ TEST_CASE("Array encoding", "[encoding]")
 {
     const plist::Value v = plist::Array{1, 2};
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n(1,2)");
     }
 
-    SECTION("ascii with whitespaces")
+    SECTION("text with whitespaces")
     {
-        const auto result = plist::encode(v, plist::Format::ascii, true);
+        const auto result = plist::encode(v, plist::Format::text, true);
         REQUIRE(result == "// !$*UTF8*$!\n(\n\t1,\n\t2\n)");
     }
 
@@ -347,15 +347,15 @@ TEST_CASE("Dictionary encoding", "[encoding]")
         {"b", 2}
     };
 
-    SECTION("ascii")
+    SECTION("text")
     {
-        const auto result = plist::encode(v, plist::Format::ascii);
+        const auto result = plist::encode(v, plist::Format::text);
         REQUIRE(result == "// !$*UTF8*$!\n{a=1;b=2;}");
     }
 
-    SECTION("ascii with whitespaces")
+    SECTION("text with whitespaces")
     {
-        const auto result = plist::encode(v, plist::Format::ascii, true);
+        const auto result = plist::encode(v, plist::Format::text, true);
         REQUIRE(result == "// !$*UTF8*$!\n{\n\ta = 1;\n\tb = 2;\n}");
     }
 
