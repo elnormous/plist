@@ -86,7 +86,7 @@ namespace plist
 
         Value& operator=(const char* v)
         {
-            value = v;
+            value = std::string{v};
             return *this;
         }
 
