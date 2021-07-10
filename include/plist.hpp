@@ -42,7 +42,7 @@ namespace plist
         template <typename T, typename std::enable_if_t<std::is_integral_v<T> && !std::is_same_v<T, bool>>* = nullptr>
         Value(T v):value{static_cast<std::int64_t>(v)} {}
         Value(const String& v):value{v} {}
-        Value(const char* v):value{v} {}
+        Value(const char* v):value{String{v}} {}
         Value(const Data& v):value{v} {}
         Value(const Date& v):value{v} {}
 
@@ -86,7 +86,7 @@ namespace plist
 
         Value& operator=(const char* v)
         {
-            value = std::string{v};
+            value = String{v};
             return *this;
         }
 
