@@ -202,7 +202,26 @@ TEST_CASE("Float encoding", "[encoding]")
     }
 }
 
-TEST_CASE("Bool encoding", "[encoding]")
+TEST_CASE("Bool false encoding", "[encoding]")
+{
+    const plist::Value v = false;
+
+    SECTION("text")
+    {
+        const auto result = plist::encode(v, plist::Format::text);
+        REQUIRE(result == "// !$*UTF8*$!\nNO");
+    }
+
+    SECTION("xml")
+    {
+        const auto result = plist::encode(v, plist::Format::xml);
+        REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+                "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">"
+                "<plist version=\"1.0\"><false/></plist>");
+    }
+}
+
+TEST_CASE("Bool true encoding", "[encoding]")
 {
     const plist::Value v = true;
 
