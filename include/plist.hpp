@@ -1,5 +1,3 @@
-// Ouzel by Elviss Strazdins
-
 #ifndef OUZEL_FORMATS_PLIST_HPP
 #define OUZEL_FORMATS_PLIST_HPP
 
