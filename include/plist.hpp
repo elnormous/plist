@@ -283,7 +283,7 @@ namespace plist
                 throw TypeError{"Wrong type"};
         }
 
-        Value& operator[](std::size_t index) &
+        Value& operator[](const std::size_t index) &
         {
             if (const auto p = std::get_if<Array>(&value))
             {
@@ -294,7 +294,7 @@ namespace plist
                 throw TypeError{"Wrong type"};
         }
 
-        const Value& operator[](std::size_t index) const&
+        const Value& operator[](const std::size_t index) const&
         {
             if (const auto p = std::get_if<Array>(&value))
             {
@@ -323,7 +323,7 @@ namespace plist
                 throw TypeError{"Wrong type"};
         }
 
-        void resize(std::size_t size) &
+        void resize(const std::size_t size) &
         {
             if (const auto p = std::get_if<Array>(&value))
                 return p->resize(size);
@@ -339,7 +339,7 @@ namespace plist
                 throw TypeError{"Wrong type"};
         }
 
-        void pushBack(std::byte v)
+        void pushBack(const std::byte v)
         {
             if (const auto p = std::get_if<Data>(&value))
                 return p->push_back(v);
@@ -365,7 +365,9 @@ namespace plist
     using String = std::string;
     using Date = std::chrono::system_clock::time_point;
 
-    inline std::string encode(const Value& value, const Format format, const bool whitespaces = false)
+    inline std::string encode(const Value& value,
+                              const Format format,
+                              const bool whitespaces = false)
     {
         class TextEncoder final
         {
