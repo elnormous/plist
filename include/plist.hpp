@@ -367,12 +367,12 @@ namespace plist
     using String = std::string;
     using Date = std::chrono::system_clock::time_point;
 
-    inline std::string encode(const Value& value, Format format, bool whitespaces = false)
+    inline std::string encode(const Value& value, const Format format, const bool whitespaces = false)
     {
         class TextEncoder final
         {
         public:
-            static std::string encode(const Value& value, bool whitespaces)
+            static std::string encode(const Value& value, const bool whitespaces)
             {
                 std::string result = "// !$*UTF8*$!\n";
                 encode(value, result, whitespaces);
@@ -408,7 +408,9 @@ namespace plist
                     result += "\"\"";
             }
 
-            static void encode(const Value& value, std::string& result, bool whitespaces, size_t level = 0)
+            static void encode(const Value& value, std::string& result,
+                               const bool whitespaces,
+                               const std::size_t level = 0)
             {
                 if (auto dictionary = std::get_if<Dictionary>(&value.getValue()))
                 {
@@ -509,7 +511,9 @@ namespace plist
                     else result.push_back(c);
             }
 
-            static void encode(const Value& value, std::string& result, bool whitespaces, size_t level = 0)
+            static void encode(const Value& value, std::string& result,
+                               const bool whitespaces,
+                               const std::size_t level = 0)
             {
                 if (auto dictionary = std::get_if<Dictionary>(&value.getValue()))
                 {
