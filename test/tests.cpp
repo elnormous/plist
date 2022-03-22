@@ -326,7 +326,7 @@ TEST_CASE("Binary data encoding", "[encoding]")
         REQUIRE(result == "// !$*UTF8*$!\n<0001>");
     }
 
-    SECTION("text with whitespaces")
+    SECTION("text with white spaces")
     {
         const auto result = plist::encode(v, plist::Format::text, true);
         REQUIRE(result == "// !$*UTF8*$!\n<00 01>");
@@ -351,7 +351,7 @@ TEST_CASE("Array encoding", "[encoding]")
         REQUIRE(result == "// !$*UTF8*$!\n(1,2)");
     }
 
-    SECTION("text with whitespaces")
+    SECTION("text with white spaces")
     {
         const auto result = plist::encode(v, plist::Format::text, true);
         REQUIRE(result == "// !$*UTF8*$!\n(\n\t1,\n\t2\n)");
@@ -365,7 +365,7 @@ TEST_CASE("Array encoding", "[encoding]")
                 "<array><integer>1</integer><integer>2</integer></array></plist>");
     }
 
-    SECTION("xml with whitespaces")
+    SECTION("xml with white spaces")
     {
         const auto result = plist::encode(v, plist::Format::xml, true);
         REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
@@ -389,7 +389,7 @@ TEST_CASE("Dictionary encoding", "[encoding]")
         REQUIRE(result == "// !$*UTF8*$!\n{a=1;b=2;}");
     }
 
-    SECTION("text with whitespaces")
+    SECTION("text with whites paces")
     {
         const auto result = plist::encode(v, plist::Format::text, true);
         REQUIRE(result == "// !$*UTF8*$!\n{\n\ta = 1;\n\tb = 2;\n}");
@@ -403,7 +403,7 @@ TEST_CASE("Dictionary encoding", "[encoding]")
                 "<plist version=\"1.0\"><dict><key>a</key><integer>1</integer><key>b</key><integer>2</integer></dict></plist>");
     }
 
-    SECTION("xml with whitespaces")
+    SECTION("xml with whites paces")
     {
         const auto result = plist::encode(v, plist::Format::xml, true);
         REQUIRE(result == "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
