@@ -410,6 +410,20 @@ namespace plist
                     result += "\"\"";
             }
 
+            static void encode(const Data& data, const bool whiteSpaces, std::string& result)
+            {
+                result += '<';
+                std::size_t count = 0;
+                for (const auto b : data)
+                {
+                    if (whiteSpaces && count++) result.push_back(' ');
+                    constexpr char digits[] = "0123456789ABCDEF";
+                    result += digits[(static_cast<std::size_t>(b) >> 4) & 0x0F];
+                    result += digits[static_cast<std::size_t>(b) & 0x0F];
+                }
+                result += '>';
+            }
+
             static void encode(const Value& value, std::string& result,
                                const bool whiteSpaces,
                                const std::size_t level = 0)
@@ -465,16 +479,7 @@ namespace plist
                 }
                 else if (auto data = std::get_if<Data>(&value.getValue()))
                 {
-                    result += '<';
-                    std::size_t count = 0;
-                    for (const auto b : *data)
-                    {
-                        if (whiteSpaces && count++) result.push_back(' ');
-                        constexpr char digits[] = "0123456789ABCDEF";
-                        result += digits[(static_cast<std::size_t>(b) >> 4) & 0x0F];
-                        result += digits[static_cast<std::size_t>(b) & 0x0F];
-                    }
-                    result += '>';
+                    encode(*data, whiteSpaces, result);
                 }
                 else if (auto date = std::get_if<Date>(&value.getValue()))
                 {
