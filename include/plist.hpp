@@ -510,11 +510,13 @@ namespace plist
         private:
             static void encode(const std::string& s, std::string& result)
             {
+                result += "<string>";
                 for (const auto c : s)
                     if (c == '<') result += "&lt;";
                     else if (c == '>') result += "&gt;";
                     else if (c == '&') result += "&amp;";
                     else result.push_back(c);
+                result += "</string>";
             }
 
             static void encode(const std::vector<std::byte>& data, std::string& result)
@@ -593,11 +595,7 @@ namespace plist
                     result += "</array>";
                 }
                 else if (auto string = std::get_if<String>(&value.getValue()))
-                {
-                    result += "<string>";
                     encode(*string, result);
-                    result += "</string>";
-                }
                 else if (auto real = std::get_if<double>(&value.getValue()))
                 {
                     result += "<real>";
