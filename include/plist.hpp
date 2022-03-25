@@ -521,6 +521,7 @@ namespace plist
 
             static void encode(const std::vector<std::byte>& data, std::string& result)
             {
+                result += "<data>";
                 constexpr char chars[] = {
                     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
                     'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -557,6 +558,7 @@ namespace plist
 
                     while (++c < 4) result += '=';
                 }
+                result += "</data>";
             }
 
             static void encode(const Dictionary& dictionary, const bool whiteSpaces,
@@ -617,15 +619,9 @@ namespace plist
                     result += "</integer>";
                 }
                 else if (auto boolean = std::get_if<bool>(&value.getValue()))
-                {
                     result += *boolean ? "<true/>" : "<false/>";
-                }
                 else if (auto data = std::get_if<Data>(&value.getValue()))
-                {
-                    result += "<data>";
                     encode(*data, result);
-                    result += "</data>";
-                }
                 else if (auto date = std::get_if<Date>(&value.getValue()))
                 {
                     (void)date;
