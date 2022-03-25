@@ -508,14 +508,19 @@ namespace plist
             }
 
         private:
-            static void encode(const std::string& s, std::string& result)
+            static void encodeString(const std::string& s, std::string& result)
             {
-                result += "<string>";
                 for (const auto c : s)
                     if (c == '<') result += "&lt;";
                     else if (c == '>') result += "&gt;";
                     else if (c == '&') result += "&amp;";
                     else result.push_back(c);
+            }
+
+            static void encode(const std::string& s, std::string& result)
+            {
+                result += "<string>";
+                encodeString(s, result);
                 result += "</string>";
             }
 
@@ -570,7 +575,7 @@ namespace plist
                 {
                     if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
                     result += "<key>";
-                    encode(key, result);
+                    encodeString(key, result);
                     result += "</key>";
                     if (whiteSpaces) result += '\n';
                     if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
