@@ -559,41 +559,49 @@ namespace plist
                 }
             }
 
+            static void encode(const Dictionary& dictionary, const bool whiteSpaces,
+                               std::size_t level, std::string& result)
+            {
+                result += "<dict>";
+                if (whiteSpaces) result.push_back('\n');
+                for (const auto& [key, entryValue] : dictionary)
+                {
+                    if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
+                    result += "<key>";
+                    encode(key, result);
+                    result += "</key>";
+                    if (whiteSpaces) result += '\n';
+                    if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
+                    encode(entryValue, result, whiteSpaces, level + 1);
+                    if (whiteSpaces) result += '\n';
+                }
+                result.insert(result.end(), level, '\t');
+                result += "</dict>";
+            }
+
+            static void encode(const Array& array, const bool whiteSpaces,
+                               std::size_t level, std::string& result)
+            {
+                result += "<array>";
+                if (whiteSpaces) result.push_back('\n');
+                for (const auto& child : array)
+                {
+                    if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
+                    encode(child, result, whiteSpaces, level + 1);
+                    if (whiteSpaces) result.push_back('\n');
+                }
+                if (whiteSpaces) result.insert(result.end(), level, '\t');
+                result += "</array>";
+            }
+
             static void encode(const Value& value, std::string& result,
                                const bool whiteSpaces,
                                const std::size_t level = 0)
             {
                 if (auto dictionary = std::get_if<Dictionary>(&value.getValue()))
-                {
-                    result += "<dict>";
-                    if (whiteSpaces) result.push_back('\n');
-                    for (const auto& [key, entryValue] : *dictionary)
-                    {
-                        if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
-                        result += "<key>";
-                        encode(key, result);
-                        result += "</key>";
-                        if (whiteSpaces) result += '\n';
-                        if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
-                        encode(entryValue, result, whiteSpaces, level + 1);
-                        if (whiteSpaces) result += '\n';
-                    }
-                    result.insert(result.end(), level, '\t');
-                    result += "</dict>";
-                }
+                    encode(*dictionary, whiteSpaces, level, result);
                 else if (auto array = std::get_if<Array>(&value.getValue()))
-                {
-                    result += "<array>";
-                    if (whiteSpaces) result.push_back('\n');
-                    for (const auto& child : *array)
-                    {
-                        if (whiteSpaces) result.insert(result.end(), level + 1, '\t');
-                        encode(child, result, whiteSpaces, level + 1);
-                        if (whiteSpaces) result.push_back('\n');
-                    }
-                    if (whiteSpaces) result.insert(result.end(), level, '\t');
-                    result += "</array>";
-                }
+                    encode(*array, whiteSpaces, level, result);
                 else if (auto string = std::get_if<String>(&value.getValue()))
                     encode(*string, result);
                 else if (auto real = std::get_if<double>(&value.getValue()))
