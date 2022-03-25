@@ -612,17 +612,9 @@ namespace plist
                 else if (auto string = std::get_if<String>(&value.getValue()))
                     encode(*string, result);
                 else if (auto real = std::get_if<double>(&value.getValue()))
-                {
-                    result += "<real>";
-                    result += std::to_string(*real);
-                    result += "</real>";
-                }
+                    result += "<real>" + std::to_string(*real) + "</real>";
                 else if (auto integer = std::get_if<std::int64_t>(&value.getValue()))
-                {
-                    result += "<integer>";
-                    result += std::to_string(*integer);
-                    result += "</integer>";
-                }
+                    result += "<integer>" + std::to_string(*integer) + "</integer>";
                 else if (auto boolean = std::get_if<bool>(&value.getValue()))
                     result += *boolean ? "<true/>" : "<false/>";
                 else if (auto data = std::get_if<Data>(&value.getValue()))
