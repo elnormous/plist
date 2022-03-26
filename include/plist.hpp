@@ -619,11 +619,8 @@ namespace plist
                     result += *boolean ? "<true/>" : "<false/>";
                 else if (auto data = std::get_if<Data>(&value.getValue()))
                     encode(*data, result);
-                else if (auto date = std::get_if<Date>(&value.getValue()))
-                {
-                    (void)date;
+                else if (std::get_if<Date>(&value.getValue()))
                     throw std::runtime_error{"Date fields are not supported"};
-                }
                 else
                     throw std::runtime_error{"Unsupported format"};
             }
