@@ -351,7 +351,7 @@ namespace plist
         auto& getValue() const noexcept { return value; }
 
     private:
-        std::variant<Dictionary, Array, String, double, std::int64_t, bool, Data, Date> value;
+        std::variant<Dictionary, Array, String, double, std::int64_t, bool, Data, Date> value{};
     };
 
     enum class Format
