@@ -411,8 +411,10 @@ namespace plist
                     result += "\"\"";
             }
 
-            static void encode(const Dictionary& dictionary, const bool whiteSpaces,
-                               std::size_t level, std::string& result)
+            static void encode(const Dictionary& dictionary,
+                               const bool whiteSpaces,
+                               const std::size_t level,
+                               std::string& result)
             {
                 result.push_back('{');
                 for (const auto& [key, entryValue] : dictionary)
@@ -431,8 +433,10 @@ namespace plist
                 result += "}";
             }
 
-            static void encode(const Array& array, const bool whiteSpaces,
-                               std::size_t level, std::string& result)
+            static void encode(const Array& array,
+                               const bool whiteSpaces,
+                               const std::size_t level,
+                               std::string& result)
             {
                 result.push_back('(');
                 std::size_t count = 0;
@@ -564,8 +568,10 @@ namespace plist
                 result += "</data>";
             }
 
-            static void encode(const Dictionary& dictionary, const bool whiteSpaces,
-                               std::size_t level, std::string& result)
+            static void encode(const Dictionary& dictionary,
+                               const bool whiteSpaces,
+                               const std::size_t level,
+                               std::string& result)
             {
                 result += "<dict>";
                 if (whiteSpaces) result.push_back('\n');
@@ -584,8 +590,10 @@ namespace plist
                 result += "</dict>";
             }
 
-            static void encode(const Array& array, const bool whiteSpaces,
-                               std::size_t level, std::string& result)
+            static void encode(const Array& array,
+                               const bool whiteSpaces,
+                               const std::size_t level,
+                               std::string& result)
             {
                 result += "<array>";
                 if (whiteSpaces) result.push_back('\n');
@@ -599,7 +607,8 @@ namespace plist
                 result += "</array>";
             }
 
-            static void encode(const Value& value, std::string& result,
+            static void encode(const Value& value,
+                               std::string& result,
                                const bool whiteSpaces,
                                const std::size_t level = 0)
             {
