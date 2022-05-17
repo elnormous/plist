@@ -32,7 +32,7 @@ namespace plist
         using String = std::string;
         using Date = std::chrono::system_clock::time_point;
     public:
-        Value() noexcept(false) = default;
+        Value() noexcept(false) {}
         Value(const Dictionary& v) noexcept(false): value{v} {}
         Value(const Array& v) noexcept(false): value(v) {}
         Value(const bool v) noexcept: value{v} {}
