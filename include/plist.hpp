@@ -452,7 +452,9 @@ namespace plist
                 result += ')';
             }
 
-            static void encode(const Data& data, const bool whiteSpaces, std::string& result)
+            static void encode(const Data& data,
+                               const bool whiteSpaces,
+                               std::string& result)
             {
                 result += '<';
                 std::size_t count = 0;
@@ -466,7 +468,8 @@ namespace plist
                 result += '>';
             }
 
-            static void encode(const Value& value, std::string& result,
+            static void encode(const Value& value,
+                               std::string& result,
                                const bool whiteSpaces,
                                const std::size_t level = 0)
             {
