@@ -170,7 +170,7 @@ namespace plist
             else if (const auto i = std::get_if<std::int64_t>(&value))
                 return static_cast<T>(*i);
             else if (const auto b = std::get_if<bool>(&value))
-                return *b ? T(1.0) : T(0.0);
+                return *b ? T(1) : T(0);
             else
                 throw TypeError{"Wrong type"};
         }
